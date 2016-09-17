@@ -3,7 +3,7 @@ library engine;
 import 'http/http.dart';
 import 'socket/socket.dart';
 
-class Engine extends Object with ServerEngineMixin {
+class Engine extends Object with EngineMixin {
   SocketEngine socket;
 
   Engine() {

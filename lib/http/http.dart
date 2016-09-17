@@ -5,7 +5,7 @@ import 'dart:io' as io;
 import 'package:path/path.dart' as path;
 import 'package:mime/mime.dart' as mime;
 
-class ServerEngineMixin {
+class EngineMixin {
   io.HttpServer httpServer;
   String status;
 
