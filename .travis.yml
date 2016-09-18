@@ -1,3 +1,10 @@
+sudo: required
 language: dart
 dart:
   - stable
+services:
+  - docker
+before_install:
+  - docker build -t test .
+script:
+  - docker run -it test 
