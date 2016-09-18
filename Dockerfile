@@ -1,10 +1,10 @@
 FROM google/dart
 
-WORKDIR /app
+WORKDIR /application
 
-ADD pubspec.* /app/
+ADD pubspec.* /application/
 RUN pub get
-ADD . /app
+ADD . /application
 RUN pub get --offline
 
 ENTRYPOINT ["pub", "run", "test"]
