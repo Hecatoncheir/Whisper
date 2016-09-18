@@ -5,5 +5,5 @@ import 'package:whisper/engine.dart';
 main() async {
   new Engine()
     ..powerUpSockets()
-    ..serveAssets(dirPath: 'web', mainHtmlFile: 'example.html');
+    ..serveAssets(port: 3000, dirPath: 'web', mainHtmlFile: 'example.html');
 }
