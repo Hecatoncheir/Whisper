@@ -6,7 +6,13 @@ class EventsListeners {
   prepareEventsListeners() async {
     socketEngine = this;
 
-    socketEngine.on('Socket client must be registered', (socketClient) async {
+    socketEngine.on('Write to all clients', (Map data) async {
+      socketEngine.writeToAllClients(data['details']['Message'],
+          from: data['from'], details: data['details']);
+    });
+
+    socketEngine.on('Socket client must be registered',
+        (SocketClient socketClient) async {
       socketEngine.writeToAllClients('Client connected',
           details: {'Online clients': socketEngine.clients.length});
     });
@@ -15,11 +21,8 @@ class EventsListeners {
         (SocketClient socketClient) async {
       await socketEngine.removeClient(socketClient);
       socketEngine.writeToAllClients('Client disconnected',
+          from: socketClient,
           details: {'Online clinets': socketEngine.clients.length});
-    });
-
-    socketEngine.on('test', (e) {
-      print('from mixin $e');
     });
   }
 }

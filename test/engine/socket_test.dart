@@ -35,20 +35,48 @@ main() {
     });
 
     test('can get message', () async {
-      ioWebSocketChannel.stream.listen(expectAsync((String data) {
-        Map messageFromSocket = JSON.decode(data);
-        if (messageFromSocket['Message'] == 'Client connected') {
+      ioWebSocketChannel.stream.listen(expectAsync((String details) {
+        Map data = JSON.decode(details);
+
+        if (data['Message'] == 'Client connected') {
           ioWebSocketChannel.sink
               .add(JSON.encode({'Message': 'Test message from client'}));
         }
 
-        if (messageFromSocket['Message'] != 'Client connected') {
-          expect(messageFromSocket['Message'], equals('Message received'));
+        if (data['Message'] != 'Client connected') {
+          expect(data['Message'], equals('Message received'));
 
           ioWebSocketChannel.sink.close();
         }
       }, count: 2));
     });
-    // test('can send message');
+
+    test('can send message', () async {
+      IOWebSocketChannel secondIoWebSocketChannel =
+          await new IOWebSocketChannel.connect('ws://localhost:8181');
+
+      secondIoWebSocketChannel.stream.listen(expectAsync((String details) {
+        Map data = JSON.decode(details);
+        if (data['Message'] == 'Client connected' &&
+            data['Online clients'] == 2) {
+          secondIoWebSocketChannel.sink
+              .add(JSON.encode({'Message': 'Hello from second client'}));
+        }
+
+        if (data['From'] == 'Socket engine') {
+          expect(data['Message'], equals('Message received'));
+          secondIoWebSocketChannel.sink.close();
+        }
+      }, count: 2, max: 3));
+
+      ioWebSocketChannel.stream.listen(expectAsync((String details) async {
+        Map data = JSON.decode(details);
+        if (data['Message'] != 'Client disconnected' &&
+            data['Message'] != 'Client connected') {
+          expect(data['Message'], equals('Hello from second client'));
+          ioWebSocketChannel.sink.close();
+        }
+      }, count: 3, max: 4));
+    });
   });
 }

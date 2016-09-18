@@ -12,15 +12,15 @@ class SocketClient extends Object with NotifyMixin, ObservableMixin {
 
   messageHandler(String data) async {
     Map detailsFromClient = JSON.decode(data);
-    String message = detailsFromClient['Message'];
     String transaction = detailsFromClient['Transaction'];
-    Map details = {'From': 'Socket engine'};
 
+    Map details = {'From': 'Socket engine'};
     if (transaction != null) details['Transaction'] = transaction;
 
     this.write('Message received', details);
 
-    dispatchEvent(message, detailsFromClient);
+    dispatchEvent(
+        'Write to all clients', {'from': this, 'details': detailsFromClient});
   }
 
   void errorHandler(error) {
