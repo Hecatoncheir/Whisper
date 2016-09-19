@@ -1,0 +1,40 @@
+<dom-module id="page-view">
+  <template>
+    <style include="page-view-theme"></style>
+
+    <socket-connect socket-server-iri="{{socketServerIri}}"
+                    socket="{{socket}}"
+                    details="{{socketDetails}}"
+                    message="{{socketMessage}}"></socket-connect>
+
+    <app-location use-hash-as-path route="{{route}}"></app-location>
+
+    <app-route
+        route="{{route}}"
+        pattern=":page"
+        data="{{routeData}}"
+        tail="{{subroute}}">
+    </app-route>
+
+    <app-route
+      route="{{subroute}}"
+      pattern="/:id"
+      data="{{subrouteData}}">
+    </app-route>
+
+<iron-pages selected="{{routeData.page}}" attr-for-selected="name">
+
+  <section name="main" route="{{subroute}}">
+    main
+  </section>
+
+  <section name="admin" route="{{subroute}}">
+    <administration-section details="{{socketDetails}}" 
+                            message="{{socketMessage}}" 
+                            socket="{{socket}}"></administration-section>
+  </section>
+  
+</iron-pages>
+
+  </template>
+</dom-module>
