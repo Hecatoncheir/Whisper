@@ -7,7 +7,4 @@ services:
 before_install:
   - docker build -t test .
 script:
-  - docker run -it test
-branches:
-  only:
-  - master
+  - docker run -it test pub run test
