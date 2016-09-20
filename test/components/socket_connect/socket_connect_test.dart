@@ -21,7 +21,7 @@ main() async {
   group('Polymer component socket-connect', () {
     test('has socketServerIri attribute', () async {
       socketConnect.socketServerIri = socketServerIri;
-      expect(socketConnect.socket, isNotNull);
+      expect(socketConnect.socketServerIri, isNotNull);
     });
   });
 }

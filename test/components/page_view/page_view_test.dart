@@ -17,10 +17,15 @@ main() async {
   });
 
   group('Polymer component page-view', () {
-    test('can show page', () async {
-      Element element = pageView.querySelector('section[name="admin"]');
-      pageView.set('route.path', 'admin');
-      expect(element.classes.contains('iron-selected'), isTrue);
-    }, skip: '');
+    test('has route property', () async {
+      String routePath = pageView.route['path'];
+      String path = pageView.get('route.path');
+      expect(routePath, equals(path));
+    });
+
+    // test('can show page', () async {
+    //   Element element = pageView.querySelector('section[name="main"]');
+    //   expect(element.classes.contains('iron-selected'), isTrue);
+    // }, skip: 'page-view can show pages');
   });
 }
