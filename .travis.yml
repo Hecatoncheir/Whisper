@@ -1,7 +1,4 @@
 sudo: required
-language: dart
-dart:
-  - stable
 services:
   - docker
 before_install:
