@@ -20,7 +20,7 @@ class SocketEngine extends Object
     SocketClient client = new SocketClient(socketClient);
     client.observable(this);
     clients.add(client);
-    dispatchEvent('Socket client must be registered', client);
+    dispatchEvent('SocketClientMustBeRegistered', client);
   }
 
   removeClient(SocketClient socketClient) async {

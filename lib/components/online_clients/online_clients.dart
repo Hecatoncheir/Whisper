@@ -8,7 +8,10 @@ import 'package:web_components/web_components.dart';
 @PolymerRegister('online-clients')
 class OnlineClients extends PolymerElement {
   @Property(reflectToAttribute: true)
-  int clients;
+  String message;
+
+  @Property(reflectToAttribute: true)
+  Map details;
 
   OnlineClients.created() : super.created();
 }

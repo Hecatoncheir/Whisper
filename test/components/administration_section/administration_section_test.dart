@@ -24,9 +24,9 @@ main() async {
     });
 
     test('can show connected clients', () async {
-      administrationSection.attributes['message'] = 'Client connected';
+      administrationSection.attributes['message'] = 'ClientConnected';
       administrationSection.attributes['details'] =
-          {'Online clients': 2}.toString();
+          {'OnlineClients': 2}.toString();
       Element clients =
           administrationSection.querySelector('.all-online-clients');
 

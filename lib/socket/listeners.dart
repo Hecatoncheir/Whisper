@@ -6,23 +6,23 @@ class EventsListeners {
   prepareEventsListeners() async {
     socketEngine = this;
 
-    socketEngine.on('Write to all clients', (Map data) async {
+    socketEngine.on('WriteToAllClients', (Map data) async {
       socketEngine.writeToAllClients(data['details']['Message'],
           from: data['from'], details: data['details']);
     });
 
-    socketEngine.on('Socket client must be registered',
+    socketEngine.on('SocketClientMustBeRegistered',
         (SocketClient socketClient) async {
-      socketEngine.writeToAllClients('Client connected',
-          details: {'Online clients': socketEngine.clients.length});
+      socketEngine.writeToAllClients('ClientConnected',
+          details: {'OnlineClients': socketEngine.clients.length});
     });
 
-    socketEngine.on('Socket client must be removed',
+    socketEngine.on('SocketClientMustBeRemoved',
         (SocketClient socketClient) async {
       await socketEngine.removeClient(socketClient);
-      socketEngine.writeToAllClients('Client disconnected',
+      socketEngine.writeToAllClients('ClientDisconnected',
           from: socketClient,
-          details: {'Online clients': socketEngine.clients.length});
+          details: {'OnlineClients': socketEngine.clients.length});
     });
   }
 }

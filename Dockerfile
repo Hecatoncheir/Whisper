@@ -20,7 +20,7 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.
 RUN wget "https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/dartium-linux-x64-release.zip" \
 && unzip dartium-linux-x64-release.zip \
 && rm dartium-linux-x64-release.zip \
-&& mv dartium-lucid64-full-stable-$SDK_VERSION.0 dartium
+&& mv dartium-lucid64-full-stable-$SDK_VERSION.0 dartium \
 && mv dartium/chrome dartium/dartium
 ENV PATH "$PATH:/dartium"
 
@@ -28,13 +28,11 @@ ENV PATH "$PATH:/dartium"
 RUN wget http://gsdview.appspot.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/content_shell-linux-x64-release.zip && unzip content_shell-linux-x64-release.zip && rm content_shell-linux-x64-release.zip && mv drt-lucid64-full-stable-$SDK_VERSION.0 content_shell
 ENV PATH "$PATH:/content_shell"
 
-RUN dartium --version && chrome --version
-
 #--- Installing Dart SDK ---
 RUN wget https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip && unzip dartsdk-linux-x64-release.zip && rm dartsdk-linux-x64-release.zip
 ENV PATH "$PATH:/dart-sdk/bin"
 
-RUN dart --version && pub --version
+RUN dart --version && pub --version && dartium --version
 
 WORKDIR /application
 

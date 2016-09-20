@@ -27,8 +27,8 @@ main() {
       ioWebSocketChannel.stream
           .listen(expectAsync((String messageFromSocketEngine) {
         Map data = JSON.decode(messageFromSocketEngine);
-        expect(data['Message'], equals('Client connected'));
-        expect(data['Online clients'], equals(1));
+        expect(data['Message'], equals('ClientConnected'));
+        expect(data['OnlineClients'], equals(1));
       }, count: 1));
 
       ioWebSocketChannel.sink.close();
@@ -38,13 +38,13 @@ main() {
       ioWebSocketChannel.stream.listen(expectAsync((String details) {
         Map data = JSON.decode(details);
 
-        if (data['Message'] == 'Client connected') {
+        if (data['Message'] == 'ClientConnected') {
           ioWebSocketChannel.sink
               .add(JSON.encode({'Message': 'Test message from client'}));
         }
 
-        if (data['Message'] != 'Client connected') {
-          expect(data['Message'], equals('Message received'));
+        if (data['Message'] != 'ClientConnected') {
+          expect(data['Message'], equals('MessageReceived'));
 
           ioWebSocketChannel.sink.close();
         }
@@ -57,22 +57,22 @@ main() {
 
       secondIoWebSocketChannel.stream.listen(expectAsync((String details) {
         Map data = JSON.decode(details);
-        if (data['Message'] == 'Client connected' &&
-            data['Online clients'] == 2) {
+        if (data['Message'] == 'ClientConnected' &&
+            data['OnlineClients'] == 2) {
           secondIoWebSocketChannel.sink
               .add(JSON.encode({'Message': 'Hello from second client'}));
         }
 
-        if (data['From'] == 'Socket engine') {
-          expect(data['Message'], equals('Message received'));
+        if (data['From'] == 'SocketEngine') {
+          expect(data['Message'], equals('MessageReceived'));
           secondIoWebSocketChannel.sink.close();
         }
       }, count: 2, max: 3));
 
       ioWebSocketChannel.stream.listen(expectAsync((String details) async {
         Map data = JSON.decode(details);
-        if (data['Message'] != 'Client disconnected' &&
-            data['Message'] != 'Client connected') {
+        if (data['Message'] != 'ClientDisconnected' &&
+            data['Message'] != 'ClientConnected') {
           expect(data['Message'], equals('Hello from second client'));
           ioWebSocketChannel.sink.close();
         }

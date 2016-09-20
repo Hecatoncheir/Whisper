@@ -14,22 +14,22 @@ class SocketClient extends Object with NotifyMixin, ObservableMixin {
     Map detailsFromClient = JSON.decode(data);
     String transaction = detailsFromClient['Transaction'];
 
-    Map details = {'From': 'Socket engine'};
+    Map details = {'From': 'SocketEngine'};
     if (transaction != null) details['Transaction'] = transaction;
 
-    this.write('Message received', details);
+    this.write('MessageReceived', details);
 
     dispatchEvent(
-        'Write to all clients', {'from': this, 'details': detailsFromClient});
+        'WriteToAllClients', {'from': this, 'details': detailsFromClient});
   }
 
   void errorHandler(error) {
-    dispatchEvent('Socket client must be removed', this);
+    dispatchEvent('SocketClientMustBeRemoved', this);
     channel.sink.close();
   }
 
   void finishedHandler() {
-    dispatchEvent('Socket client must be removed', this);
+    dispatchEvent('SocketClientMustBeRemoved', this);
     channel.sink.close();
   }
 
