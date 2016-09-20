@@ -22,7 +22,7 @@ class EventsListeners {
       await socketEngine.removeClient(socketClient);
       socketEngine.writeToAllClients('Client disconnected',
           from: socketClient,
-          details: {'Online clinets': socketEngine.clients.length});
+          details: {'Online clients': socketEngine.clients.length});
     });
   }
 }

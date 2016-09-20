@@ -7,6 +7,8 @@ import 'package:web_components/web_components.dart';
 
 import 'package:web_socket_channel/html.dart';
 
+import 'package:whisper/components/online_clients/online_clients.dart';
+
 @PolymerRegister('administration-section')
 class AdministrationSection extends PolymerElement {
   @Property(reflectToAttribute: true, observer: 'socketMessageChanged')
@@ -23,7 +25,10 @@ class AdministrationSection extends PolymerElement {
   @reflectable
   socketMessageChanged(String newMessage, [_]) {
     if (newMessage == null) return;
-    print(newMessage);
-    print(details);
+
+    if (newMessage == 'Client connected' ||
+        newMessage == 'Client disconnected') {
+      set('onlineClients', details['Online clients']);
+    }
   }
 }
