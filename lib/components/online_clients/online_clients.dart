@@ -13,5 +13,14 @@ class OnlineClients extends PolymerElement {
   @Property(reflectToAttribute: true)
   Map details;
 
+  @Property(reflectToAttribute: true, observer: 'clientsCountChanged')
+  int clientsCount;
+
   OnlineClients.created() : super.created();
+
+  @reflectable
+  clientsCountChanged(int clientsCount, [_]) {
+    details['OnlineClients'] = clientsCount;
+    set('details.OnlineClients', clientsCount);
+  }
 }

@@ -18,7 +18,7 @@ main() async {
 
   group('Polymer component online-clients', () {
     test('can show connected online clients', () async {
-      onlineClients.attributes['clients'] = 3.toString();
+      onlineClients.attributes['clients-count'] = 3.toString();
       Element clients = onlineClients.querySelector('.all-online-clients');
       expect(clients.innerHtml, equals('3'));
     });
