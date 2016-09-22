@@ -1,19 +1,16 @@
 FROM fedora
-ENV SDK_VERSION 1.19.1
 
 USER root
-WORKDIR /root/application
-
-RUN dnf update -y
+ENV SDK_VERSION 1.19.1
 
 RUN \
-  dnf update && \
+  dnf update -y && \
   dnf install -y \
       'dnf-command(copr)' \
       wget \
-      curl \
       git \
       unzip \
+      libgconf-2.so.4 \
       && \
   dnf autoremove && \
   dnf clean all
@@ -34,23 +31,27 @@ RUN \
 
 #--- Installing content shell ---
 RUN \
-  wget http://gsdview.appspot.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/content_shell-linux-x64-release.zip \
+  cd /root && wget \
+  http://gsdview.appspot.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/content_shell-linux-x64-release.zip \
   && unzip content_shell-linux-x64-release.zip \
   && rm content_shell-linux-x64-release.zip \
   && mv drt-lucid64-full-stable-$SDK_VERSION.0 content_shell
 ENV PATH "$PATH:/root/content_shell"
+ENV DISPLAY=:0.0
 
 #--- Installing Dart SDK ---
 RUN \
- wget https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip \
+ cd /root && wget \
+ https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip \
  && unzip dartsdk-linux-x64-release.zip \
  && rm dartsdk-linux-x64-release.zip
 ENV PATH "$PATH:/root/dart-sdk/bin"
 
 RUN \
   dart --version && \
-  pub --version && \
-  dartium --version
+  pub --version
+
+WORKDIR /root/application
 
 ADD pubspec.yaml /root/application/
 RUN pub get
@@ -58,7 +59,7 @@ RUN pub get
 ADD . /root/application/
 RUN pub get --offline
 
-# RUN pub build
+RUN pub build
 
 EXPOSE 3000 8181
 CMD ["dart", "bin/server.dart"]
