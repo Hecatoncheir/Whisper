@@ -38,14 +38,14 @@ RUN \
   && unzip content_shell-linux-x64-release.zip \
   && rm content_shell-linux-x64-release.zip \
   && mv drt-lucid64-full-stable-$SDK_VERSION.0 content_shell
-ENV PATH "$PATH:/content_shell"
+ENV PATH "$PATH:/root/content_shell"
 
 #--- Installing Dart SDK ---
 RUN \
  wget https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip \
  && unzip dartsdk-linux-x64-release.zip \
  && rm dartsdk-linux-x64-release.zip
-ENV PATH "$PATH:/dart-sdk/bin"
+ENV PATH "$PATH:/root/dart-sdk/bin"
 
 RUN \
   dart --version && \
