@@ -20,7 +20,6 @@ class OnlineClients extends PolymerElement {
 
   @reflectable
   clientsCountChanged(int clientsCount, [_]) {
-    details['OnlineClients'] = clientsCount;
     set('details.OnlineClients', clientsCount);
   }
 }

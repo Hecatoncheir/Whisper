@@ -10,6 +10,7 @@ RUN \
       wget \
       git \
       unzip \
+      tar \
       libgconf-2.so.4 \
       && \
   dnf autoremove && \

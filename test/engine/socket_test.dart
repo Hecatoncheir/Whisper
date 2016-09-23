@@ -28,7 +28,7 @@ main() {
           .listen(expectAsync((String messageFromSocketEngine) {
         Map data = JSON.decode(messageFromSocketEngine);
         expect(data['Message'], equals('ClientConnected'));
-        expect(data['OnlineClients'], equals(1));
+        expect(data['OnlineClientsCount'], equals(1));
       }, count: 1));
 
       ioWebSocketChannel.sink.close();
@@ -58,7 +58,7 @@ main() {
       secondIoWebSocketChannel.stream.listen(expectAsync((String details) {
         Map data = JSON.decode(details);
         if (data['Message'] == 'ClientConnected' &&
-            data['OnlineClients'] == 2) {
+            data['OnlineClientsCount'] == 2) {
           secondIoWebSocketChannel.sink
               .add(JSON.encode({'Message': 'Hello from second client'}));
         }

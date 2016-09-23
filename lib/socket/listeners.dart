@@ -14,7 +14,7 @@ class EventsListeners {
     socketEngine.on('SocketClientMustBeRegistered',
         (SocketClient socketClient) async {
       socketEngine.writeToAllClients('ClientConnected',
-          details: {'OnlineClients': socketEngine.clients.length});
+          details: {'OnlineClientsCount': socketEngine.clients.length});
     });
 
     socketEngine.on('SocketClientMustBeRemoved',
@@ -22,7 +22,7 @@ class EventsListeners {
       await socketEngine.removeClient(socketClient);
       socketEngine.writeToAllClients('ClientDisconnected',
           from: socketClient,
-          details: {'OnlineClients': socketEngine.clients.length});
+          details: {'OnlineClientsCount': socketEngine.clients.length});
     });
   }
 }
