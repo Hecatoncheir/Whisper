@@ -53,7 +53,7 @@ RUN \
 
 WORKDIR /root/application
 
-ADD pubspec.yaml /root/application/
+ADD pubspec.* /root/application/
 RUN pub get
 
 ADD . /root/application/
