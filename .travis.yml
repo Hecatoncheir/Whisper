@@ -1,16 +1,12 @@
 language: dart
 dart:
   - stable
-with_content_shell: true
 sudo: required
 services:
   - docker
 before_install:
   - docker build -t test .
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
 script:
-  - pub run test -p content-shell
   - docker run -t test pub run test
   # - docker run -t test pub run -c test -p content-shell // world is not ready yet
 after_success:
