@@ -11,6 +11,7 @@ RUN \
       git \
       unzip \
       tar \
+      xorg-x11-server-Xvfb \
       libgconf-2.so.4 \
       && \
   dnf autoremove && \
@@ -38,7 +39,7 @@ RUN \
   && rm content_shell-linux-x64-release.zip \
   && mv drt-lucid64-full-stable-$SDK_VERSION.0 content_shell
 ENV PATH "$PATH:/root/content_shell"
-ENV DISPLAY=:0.0
+ENV DISPLAY=:99.0
 
 #--- Installing Dart SDK ---
 RUN \
@@ -65,7 +66,7 @@ RUN \
   pub run dart_codecov_generator:generate_coverage \
   --report-on=lib/ --no-html --verbose test/engine
 
-# RUN pub build
+RUN pub build
 
 EXPOSE 3000 8181
 CMD ["dart", "bin/server.dart"]
