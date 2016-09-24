@@ -1,8 +1,17 @@
+language: dart
+dart:
+  - stable
+with_content_shell: true
 sudo: required
 services:
   - docker
 before_install:
   - docker build -t test .
 script:
-  - docker run -it test pub run test
-  # - docker run -it test pub run -c test -p content-shell // world is not ready yet
+  - pub run test -p content-shell
+  - docker run -t test pub run test
+  # - docker run -t test pub run -c test -p content-shell // world is not ready yet
+after_success:
+  - pub run dart_codecov_generator:generate_coverage \
+  --report-on=lib/ --no-html --verbose test/engine
+  - curl -s https://codecov.io/bash | bash

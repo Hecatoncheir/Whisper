@@ -52,6 +52,7 @@ RUN \
   dart --version && \
   pub --version
 
+#--- Prepare application ---
 WORKDIR /root/application
 
 ADD pubspec.* /root/application/
@@ -60,7 +61,11 @@ RUN pub get
 ADD . /root/application/
 RUN pub get --offline
 
-RUN pub build
+RUN \
+  pub run dart_codecov_generator:generate_coverage \
+  --report-on=lib/ --no-html --verbose test/engine
+
+# RUN pub build
 
 EXPOSE 3000 8181
 CMD ["dart", "bin/server.dart"]
