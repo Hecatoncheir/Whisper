@@ -1,4 +1,4 @@
-![Whisper logotype](https://raw.githubusercontent.com/Rasarts/Whisper/master/web/assets/logotype/whisper_logotype_red.png)
+![Whisper logotype](https://raw.githubusercontent.com/Rasarts/Whisper/master/web/assets/logotype/whisper_logotype_black.png)
 ================
 #### Engine of real time content management
 
