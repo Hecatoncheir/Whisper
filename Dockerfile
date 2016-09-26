@@ -1,4 +1,5 @@
 FROM fedora
+MAINTAINER Vostrikov Vitaliy
 
 USER root
 ENV SDK_VERSION 1.19.1
@@ -14,7 +15,18 @@ RUN \
   dnf autoremove && \
   dnf clean all
 
-RUN /usr/bin/Xvfb :1.0 -screen 0 1280x1024x24 &
+#--- Installing Xvfb ---
+RUN \
+  dnf install -y xorg-x11-server-Xvfb \
+      initscripts \
+  && cd /etc/init.d/ \
+  && wget -O /etc/init.d/xvfb https://gist.githubusercontent.com/Rasarts/8e9919d7c202d4123bdeb3514962ad47/raw/f858fc1a367d0e68eb078608ae2c903b048a0815/gistfile1.txt \
+  && chmod -R 777 xvfb \
+  && echo 'DISPLAY=\":1\"' >> /etc/environment \
+  && chkconfig --add xvfb \
+  && chkconfig --list xvfb \
+  && chkconfig --level 2345 xvfb on \
+  && service xvfb start
 
 #--- Installing content shell ---
 RUN \
@@ -27,7 +39,6 @@ RUN \
       libasound.so.2 \
       libXtst.so.6 \
       libXrandr.so.2 \
-      xorg-x11-server-Xvfb \
       libgconf-2.so.4 \
   && dnf autoremove \
   && dnf clean all && \
@@ -95,6 +106,7 @@ RUN \
   dart --version && \
   pub --version
 
+#--- Installing Codecov report script ---
 RUN \
   mkdir /root/tools \
   && wget -O /root/tools/codecov https://codecov.io/bash \
