@@ -1,98 +1,46 @@
-FROM fedora
+FROM ubuntu:latest
 MAINTAINER Vostrikov Vitaliy
 
 USER root
 ENV SDK_VERSION 1.19.1
 
 RUN \
-  dnf update -y && \
-  dnf install -y \
+  apt update -y \
+  && apt install -y \
       wget \
       git \
       unzip \
-      tar \
-      && \
-  dnf autoremove && \
-  dnf clean all
+      tar
 
 #--- Installing Xvfb ---
 RUN \
-  dnf install -y xorg-x11-server-Xvfb \
-      initscripts \
+  apt install -y xvfb \
+      libglib2.0-0 \
+      libnss3-dev \
+      libgconf-2-4 \
+      libfontconfig1 \
+      libpangocairo-1.0 \
+      libxi6 \
+      libatk1.0-0 \
+      libxcursor1 \
+      libxcomposite1 \
+      libasound2 \
+      libxtst6 \
+      libxrandr2 \
   && cd /etc/init.d/ \
-  && wget -O /etc/init.d/xvfb https://gist.githubusercontent.com/Rasarts/8e9919d7c202d4123bdeb3514962ad47/raw/f858fc1a367d0e68eb078608ae2c903b048a0815/gistfile1.txt \
+  && wget -O /etc/init.d/xvfb https://gist.githubusercontent.com/dloman/8303932/raw/a9534ba144388014aab20776e84db2c720a366bf/xvfb \
   && chmod -R 777 xvfb \
   && echo 'DISPLAY=\":1\"' >> /etc/environment \
-  && chkconfig --add xvfb \
-  && chkconfig --list xvfb \
-  && chkconfig --level 2345 xvfb on \
-  && service xvfb start
+  && /etc/init.d/xvfb start
 
 #--- Installing content shell ---
 RUN \
-  dnf install -y libfontconfig.so.1 \
-      libpangocairo-1.0.so.0 \
-      libXi.so.6 \
-      libatk-1.0.so.0 \
-      libXcursor.so.1 \
-      libXcomposite.so.1 \
-      libasound.so.2 \
-      libXtst.so.6 \
-      libXrandr.so.2 \
-      libgconf-2.so.4 \
-  && dnf autoremove \
-  && dnf clean all && \
-  cd /root && wget \
-  http://gsdview.appspot.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/content_shell-linux-x64-release.zip \
+  cd /root && \
+  wget http://gsdview.appspot.com/dart-archive/channels/stable/release/$SDK_VERSION/dartium/content_shell-linux-x64-release.zip \
   && unzip content_shell-linux-x64-release.zip \
   && rm content_shell-linux-x64-release.zip \
   && mv drt-lucid64-full-stable-$SDK_VERSION.0 content_shell
 ENV PATH "$PATH:/root/content_shell"
-
-#--- Fix content-shell fonts ---
-RUN \
-  mkdir /usr/share/fonts/truetype/ && \
-  mkdir /usr/share/fonts/truetype/kochi && \
-  cd /usr/share/fonts/truetype/kochi && \
-  ln -s /root/content_shell/GardinerModCat.ttf kochi-gothic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf kochi-mincho.ttf && \
-  mkdir /usr/share/fonts/truetype/ttf-dejavu && \
-  cd /usr/share/fonts/truetype/ttf-dejavu && \
-  ln -s /root/content_shell/GardinerModCat.ttf DejaVuSans.ttf && \
-  mkdir /usr/share/fonts/truetype/ttf-indic-fonts-core && \
-  cd /usr/share/fonts/truetype/ttf-indic-fonts-core && \
-  ln -s /root/content_shell/GardinerModCat.ttf lohit_hi.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf lohit_ta.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf MuktiNarrow.ttf && \
-  mkdir /usr/share/fonts/truetype/msttcorefonts && \
-  cd /usr/share/fonts/truetype/msttcorefonts && \
-  ln -s /root/content_shell/GardinerModCat.ttf Arial.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Arial_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Arial_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Arial_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Comic_Sans_MS.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Comic_Sans_MS_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Courier_New.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Courier_New_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Courier_New_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Courier_New_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Georgia.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Georgia_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Georgia_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Georgia_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Impact.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Trebuchet_MS.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Trebuchet_MS_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Trebuchet_MS_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Trebuchet_MS_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Times_New_Roman.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Times_New_Roman_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Times_New_Roman_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Times_New_Roman_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Verdana.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Verdana_Bold.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Verdana_Bold_Italic.ttf && \
-  ln -s /root/content_shell/GardinerModCat.ttf Verdana_Italic.ttf
 
 #--- Installing Dart SDK ---
 RUN \
