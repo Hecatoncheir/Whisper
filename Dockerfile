@@ -57,11 +57,6 @@ RUN \
   dart --version && \
   pub --version
 
-#--- Installing Codecov report script ---
-RUN \
-  wget -O /root/application/codecov https://codecov.io/bash \
-  && chmod +x /root/application/codecov
-
 #--- Prepare application ---
 WORKDIR /root/application
 
@@ -71,11 +66,16 @@ RUN pub get
 ADD . /root/application/
 RUN pub get --offline
 
-RUN pub build
+# RUN pub build
 
 RUN \
   pub run dart_codecov_generator \
   --report-on=lib/ --no-html --verbose test/engine
+
+#--- Installing Codecov report script ---
+RUN \
+  wget -O /root/application/codecov https://codecov.io/bash \
+  && chmod +x /root/application/codecov
 
 EXPOSE 3000 8181
 CMD ["dart", "bin/server.dart"]
