@@ -39,6 +39,6 @@ main() {
         expect(htmlContent.contains('application/dart'), isTrue);
         expect(htmlContent, isNotEmpty);
       }));
-    });
+    }, skip: 'Not testable test');
   });
 }
