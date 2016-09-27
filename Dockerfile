@@ -1,54 +1,40 @@
-FROM ubuntu:latest
+FROM ubuntu:12.04
 MAINTAINER Vostrikov Vitaliy
 
 USER root
+
+#--- Configuration ---
+ENV CHANNEL stable
 ENV SDK_VERSION 1.19.1
-ENV CONTENT_SHELL_VERSION 1.14.2
+ENV CONTENT_SHELL_VERSION 1.19.1
 
+#--- Install third-party dependencies ---
+RUN echo "deb http://us.archive.ubuntu.com/ubuntu precise main multiverse" \
+    >> /etc/apt/sources.list \
+    && apt-get update
 RUN \
-  apt update -y \
-  && apt install -y \
-      wget \
-      curl \
-      git \
-      unzip \
-      tar
-
-#--- Installing Xvfb ---
-RUN \
-  apt install -y xvfb \
-      libglib2.0-0 \
-      libnss3-dev \
-      libgconf-2-4 \
-      libfontconfig1 \
-      libpangocairo-1.0 \
-      libxi6 \
-      libatk1.0-0 \
-      libxcursor1 \
-      libxcomposite1 \
-      libasound2 \
-      libxtst6 \
-      libxrandr2 \
-  && ln -sf /lib/$(arch)-linux-gnu/libudev.so.1 /lib/$(arch)-linux-gnu/libudev.so.0 \
-  && cd /etc/init.d/ \
-  && wget -O /etc/init.d/xvfb https://gist.githubusercontent.com/dloman/8303932/raw/a9534ba144388014aab20776e84db2c720a366bf/xvfb \
-  && chmod -R 777 xvfb \
-  && echo 'DISPLAY=\":1\"' >> /etc/environment \
-  && /etc/init.d/xvfb start
+  apt-get install -y --force-yes \
+          lsb-release \
+          sudo \
+          unzip \
+          wget \
+          git
+RUN git clone https://chromium.googlesource.com/chromium/src/build
+RUN build/install-build-deps.sh --no-prompt
 
 #--- Installing content shell ---
 RUN \
   cd /root && \
-  wget http://gsdview.appspot.com/dart-archive/channels/stable/release/$CONTENT_SHELL_VERSION/dartium/content_shell-linux-x64-release.zip \
+  wget http://gsdview.appspot.com/dart-archive/channels/$CHANNEL/release/$CONTENT_SHELL_VERSION/dartium/content_shell-linux-x64-release.zip \
   && unzip content_shell-linux-x64-release.zip \
   && rm content_shell-linux-x64-release.zip \
-  && mv drt-lucid64-full-stable-$CONTENT_SHELL_VERSION.0 content_shell
+  && mv drt-lucid64-full-$CHANNEL-$CONTENT_SHELL_VERSION.0 content_shell
 ENV PATH "$PATH:/root/content_shell"
 
 #--- Installing Dart SDK ---
 RUN \
  cd /root && wget \
- https://storage.googleapis.com/dart-archive/channels/stable/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip \
+ https://storage.googleapis.com/dart-archive/channels/$CHANNEL/release/$SDK_VERSION/sdk/dartsdk-linux-x64-release.zip \
  && unzip dartsdk-linux-x64-release.zip \
  && rm dartsdk-linux-x64-release.zip
 ENV PATH "$PATH:/root/dart-sdk/bin"
@@ -66,7 +52,7 @@ RUN pub get
 ADD . /root/application/
 RUN pub get --offline
 
-# RUN pub build
+RUN pub build
 
 RUN \
   pub run dart_codecov_generator \
