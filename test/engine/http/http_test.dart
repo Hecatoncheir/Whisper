@@ -36,9 +36,9 @@ main() {
       httpClientResponse
           .transform(UTF8.decoder)
           .listen(expectAsync((String htmlContent) {
-        expect(htmlContent.contains('application/dart'), isTrue);
+        expect(htmlContent.contains('http_test_asset'), isTrue);
         expect(htmlContent, isNotEmpty);
       }));
-    }, skip: 'Not testable test');
+    });
   });
 }
