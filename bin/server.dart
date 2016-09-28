@@ -1,6 +1,6 @@
 library server;
 
-import 'package:whisper/engine.dart';
+import 'package:whisper/engine/engine.dart';
 
 main() async {
   new Engine()

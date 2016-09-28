@@ -7,10 +7,8 @@ import 'package:web_socket_channel/io.dart';
 import 'package:avalanche_events/avalanche_events.dart';
 
 part 'clients.dart';
-part 'listeners.dart';
 
-class SocketEngine extends Object
-    with NotifyMixin, ObservableMixin, EventsListeners {
+class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   HttpServer httpServer;
   List<SocketClient> clients;
 
@@ -45,7 +43,6 @@ class SocketEngine extends Object
   }
 
   powerUp({String ip, int port}) async {
-    prepareEventsListeners();
     if (clients == null) clients = new List<SocketClient>();
     if (ip == null) ip = InternetAddress.LOOPBACK_IP_V4.host;
     if (port == null) port = 8181;
