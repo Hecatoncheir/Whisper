@@ -19,6 +19,8 @@ class SocketClient extends Object with NotifyMixin, ObservableMixin {
 
     this.write('MessageReceived', details);
 
+    dispatchEvent(detailsFromClient['Message'], detailsFromClient);
+
     dispatchEvent(
         'WriteToAllClients', {'from': this, 'details': detailsFromClient});
   }
