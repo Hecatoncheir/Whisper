@@ -1,3 +1,3 @@
 library whisper;
 
-export 'engine/engine.dart';
+export 'src/engine/engine.dart';
