@@ -5,7 +5,7 @@ import 'dart:html';
 import 'package:test/test.dart';
 import 'package:polymer/init.dart';
 
-import 'package:whisper/components/socket_connect/socket_connect.dart';
+import 'package:whisper/src/components/socket_connect/socket_connect.dart';
 
 main() async {
   await initPolymer();

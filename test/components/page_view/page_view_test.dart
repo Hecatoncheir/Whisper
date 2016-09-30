@@ -5,7 +5,7 @@ import 'dart:html';
 import 'package:test/test.dart';
 import 'package:polymer/init.dart';
 
-import 'package:whisper/components/page_view/page_view.dart';
+import 'package:whisper/src/components/page_view/page_view.dart';
 
 main() async {
   await initPolymer();

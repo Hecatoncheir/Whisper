@@ -9,8 +9,8 @@ import 'package:polymer_elements/app_location.dart';
 import 'package:polymer_elements/app_route.dart';
 import 'package:polymer_elements/iron_pages.dart';
 
-import 'package:whisper/components/socket_connect/socket_connect.dart';
-import 'package:whisper/components/administration_section/administration_section.dart';
+import 'package:whisper/src/components/socket_connect/socket_connect.dart';
+import 'package:whisper/src/components/administration_section/administration_section.dart';
 
 @PolymerRegister('page-view')
 class PageView extends PolymerElement {

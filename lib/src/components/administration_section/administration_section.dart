@@ -7,7 +7,7 @@ import 'package:web_components/web_components.dart';
 
 import 'package:web_socket_channel/html.dart';
 
-import 'package:whisper/components/online_clients/online_clients.dart';
+import 'package:whisper/src/components/online_clients/online_clients.dart';
 
 @PolymerRegister('administration-section')
 class AdministrationSection extends PolymerElement {
