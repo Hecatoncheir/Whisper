@@ -19,7 +19,6 @@ class EventsListeners {
 
     socketEngine.on('SocketClientMustBeRemoved',
         (SocketClient socketClient) async {
-      await socketEngine.removeClient(socketClient);
       socketEngine.writeToAllClients('ClientDisconnected',
           from: socketClient,
           details: {'OnlineClientsCount': socketEngine.clients.length});

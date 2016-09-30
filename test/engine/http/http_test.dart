@@ -5,7 +5,7 @@ import 'dart:io';
 import 'dart:convert';
 
 import 'package:test/test.dart';
-import 'package:whisper/engine/engine.dart';
+import 'package:whisper/src/engine/engine.dart';
 
 main() {
   group('Http server', () {

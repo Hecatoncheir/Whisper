@@ -18,6 +18,11 @@ class SocketEngine extends Object with NotifyMixin, ObservableMixin {
     SocketClient client = new SocketClient(socketClient);
     client.observable(this);
     clients.add(client);
+
+    client.on('SocketClientMustBeRemoved', (SocketClient socketClient) async {
+      await this.removeClient(socketClient);
+    });
+
     dispatchEvent('SocketClientMustBeRegistered', client);
   }
 

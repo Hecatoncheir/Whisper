@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:test/test.dart';
 import 'package:polymer/init.dart';
 
-import 'package:whisper/components/administration_section/administration_section.dart';
+import 'package:whisper/src/components/administration_section/administration_section.dart';
 
 main() async {
   await initPolymer();

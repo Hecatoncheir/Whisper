@@ -6,7 +6,7 @@ import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:web_socket_channel/io.dart';
 
-import 'package:whisper/engine/engine.dart';
+import 'package:whisper/src/engine/engine.dart';
 
 main() {
   group('Socket server', () {
