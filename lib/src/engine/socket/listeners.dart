@@ -7,8 +7,8 @@ class EventsListeners {
     socketEngine = this;
 
     socketEngine.on('WriteToAllClients', (Map data) async {
-      socketEngine.writeToAllClients(data['details']['Message'],
-          from: data['from'], details: data['details']);
+      socketEngine.writeToAllClients(data['Details']['forAllClientsMessage'],
+          from: data['SocketClient'], details: data);
     });
 
     socketEngine.on('SocketClientMustBeRegistered',

@@ -59,8 +59,10 @@ main() {
         Map data = JSON.decode(details);
         if (data['Message'] == 'ClientConnected' &&
             data['OnlineClientsCount'] == 2) {
-          secondIoWebSocketChannel.sink
-              .add(JSON.encode({'Message': 'Hello from second client'}));
+          secondIoWebSocketChannel.sink.add(JSON.encode({
+            'Message': 'WriteToAllClients',
+            'Details': {'ForAllClientsMessage': 'Hello from second client'}
+          }));
         }
 
         if (data['From'] == 'SocketEngine') {
@@ -73,7 +75,8 @@ main() {
         Map data = JSON.decode(details);
         if (data['Message'] != 'ClientDisconnected' &&
             data['Message'] != 'ClientConnected') {
-          expect(data['Message'], equals('Hello from second client'));
+          expect(data['Details']['ForAllClientsMessage'],
+              equals('Hello from second client'));
           ioWebSocketChannel.sink.close();
         }
       }, count: 3, max: 4));
