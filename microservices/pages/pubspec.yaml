@@ -1,0 +1,6 @@
+name: pages
+dependencies:
+  whisper:
+    path: ../../
+dev_dependencies:
+  test: '^0.12.15+3'
