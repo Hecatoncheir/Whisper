@@ -6,7 +6,7 @@ import 'dart:html';
 import 'package:test/test.dart';
 import 'package:polymer/init.dart';
 
-import 'package:whisper/src/components/online_clients/online_clients.dart';
+import 'package:whisper/components/online_clients/online_clients.dart';
 
 main() async {
   await initPolymer();
