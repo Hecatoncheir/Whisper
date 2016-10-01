@@ -1,16 +1,13 @@
 library pages;
 
-import 'src/socket/socket.dart';
+import 'src/socket.dart';
 
 part 'src/page.dart';
 
-class Pages {
+class Pages extends Object {
   PagesSocket socket;
 
   Pages() {
     socket = new PagesSocket();
-    socket.on('NeedPageDescription', (Map data) {
-      print('NeedPageDescription');
-    });
   }
 }
