@@ -1,6 +1,12 @@
 name: pages
 dependencies:
+  polymer: '^1.0.0-rc.18'
+  polymer_elements: '^1.0.0-rc.9'
+  web_socket_channel: '^1.0.4'
+  ex_map: '^0.10.2'
   whisper:
     path: ../../
 dev_dependencies:
   test: '^0.12.15+3'
+transformers:
+  - ex_map
