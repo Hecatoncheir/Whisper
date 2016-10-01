@@ -10,11 +10,8 @@ RUN \
 #--- Prepare application ---
 WORKDIR /root/application
 
-ADD pubspec.* /root/application/
-RUN pub get
-
 ADD . /root/application/
-RUN pub get --offline
+RUN pub get
 
 # RUN pub build
 
