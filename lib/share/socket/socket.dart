@@ -31,6 +31,7 @@ class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   }
 
   writeToAllClients(String message, {Map details, SocketClient from}) async {
+    details.remove('SocketClient');
     clients.forEach((SocketClient client) async {
       if (client == from) return;
       client.write(message, details);
