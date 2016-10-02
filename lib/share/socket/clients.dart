@@ -14,6 +14,7 @@ class SocketClient extends Object with NotifyMixin, ObservableMixin {
 
   messageHandler(String data) async {
     Map detailsFromClient = JSON.decode(data);
+    detailsFromClient['ClientIdentificator'] = identificator;
     dispatchEvent(detailsFromClient['Message'], detailsFromClient);
   }
 
