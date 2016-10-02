@@ -2,9 +2,11 @@ part of socket_server;
 
 class SocketClient extends Object with NotifyMixin, ObservableMixin {
   IOWebSocketChannel channel;
+  String identificator;
 
   SocketClient(WebSocket client) {
     channel = new IOWebSocketChannel(client);
+    identificator = new Uuid().v4();
 
     channel.stream
         .listen(messageHandler, onError: errorHandler, onDone: finishedHandler);
@@ -12,14 +14,6 @@ class SocketClient extends Object with NotifyMixin, ObservableMixin {
 
   messageHandler(String data) async {
     Map detailsFromClient = JSON.decode(data);
-    detailsFromClient['SocketClient'] = this;
-    String transaction = detailsFromClient['Transaction'];
-
-    Map details = {'From': 'SocketEngine'};
-    if (transaction != null) details['Transaction'] = transaction;
-
-    this.write('MessageReceived', details);
-
     dispatchEvent(detailsFromClient['Message'], detailsFromClient);
   }
 

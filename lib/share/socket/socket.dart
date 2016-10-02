@@ -3,6 +3,7 @@ library socket_server;
 import 'dart:io';
 import 'dart:convert';
 
+import 'package:uuid/uuid_server.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:avalanche_events/avalanche_events.dart';
 
@@ -10,14 +11,14 @@ part 'clients.dart';
 
 class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   HttpServer httpServer;
-  List<SocketClient> clients;
+  Map<String, SocketClient> clients;
 
   SocketEngine();
 
   addClient(WebSocket socketClient) async {
     SocketClient client = new SocketClient(socketClient);
     client.observable(this);
-    clients.add(client);
+    clients[client.identificator] = client;
 
     client.on('SocketClientMustBeRemoved', (SocketClient socketClient) async {
       await this.removeClient(socketClient);
@@ -27,13 +28,15 @@ class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   }
 
   removeClient(SocketClient socketClient) async {
-    clients.remove(socketClient);
+    clients.remove(socketClient.identificator);
   }
 
-  writeToAllClients(String message, {Map details, SocketClient from}) async {
-    details.remove('SocketClient');
-    clients.forEach((SocketClient client) async {
-      if (client == from) return;
+  writeToAllClients(String message,
+      {Map details, String exceptClientIdentificator}) async {
+    clients.forEach((String identificator, SocketClient client) async {
+      if (exceptClientIdentificator != null) {
+        if (identificator == exceptClientIdentificator) return;
+      }
       client.write(message, details);
     });
   }
@@ -49,7 +52,7 @@ class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   }
 
   powerUp({String ip, int port}) async {
-    if (clients == null) clients = new List<SocketClient>();
+    if (clients == null) clients = new Map<String, SocketClient>();
     if (ip == null) ip = InternetAddress.LOOPBACK_IP_V4.host;
     if (port == null) port = 8181;
 

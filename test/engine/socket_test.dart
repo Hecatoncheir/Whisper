@@ -27,59 +27,27 @@ main() {
       ioWebSocketChannel.stream
           .listen(expectAsync((String messageFromSocketEngine) {
         Map data = JSON.decode(messageFromSocketEngine);
-        expect(data['Message'], equals('ClientConnected'));
-        expect(data['OnlineClientsCount'], equals(1));
-      }, count: 1));
+        if (data['Message'] == 'ClientConnected') return;
+
+        expect(data['Message'], equals('ClientRegistered'));
+        expect(data['Identificator'], isNotNull);
+        expect(data['Identificator'], isNotEmpty);
+      }, count: 2));
 
       ioWebSocketChannel.sink.close();
     });
 
-    test('can get message', () async {
-      ioWebSocketChannel.stream.listen(expectAsync((String details) {
-        Map data = JSON.decode(details);
+    test('can send clients count', () async {
+      ioWebSocketChannel.stream
+          .listen(expectAsync((String messageFromSocketEngine) {
+        Map data = JSON.decode(messageFromSocketEngine);
+        if (data['Message'] == 'ClientRegistered') return;
 
-        if (data['Message'] == 'ClientConnected') {
-          ioWebSocketChannel.sink
-              .add(JSON.encode({'Message': 'Test message from client'}));
-        }
-
-        if (data['Message'] != 'ClientConnected') {
-          expect(data['Message'], equals('MessageReceived'));
-
-          ioWebSocketChannel.sink.close();
-        }
+        expect(data['Message'], equals('ClientConnected'));
+        expect(data['OnlineClientsCount'], equals(1));
       }, count: 2));
+
+      ioWebSocketChannel.sink.close();
     });
-
-    test('can send message', () async {
-      IOWebSocketChannel secondIoWebSocketChannel =
-          await new IOWebSocketChannel.connect('ws://localhost:8181');
-
-      secondIoWebSocketChannel.stream.listen(expectAsync((String details) {
-        Map data = JSON.decode(details);
-        if (data['Message'] == 'ClientConnected' &&
-            data['OnlineClientsCount'] == 2) {
-          secondIoWebSocketChannel.sink.add(JSON.encode({
-            'Message': 'WriteToAllClients',
-            'Details': {'ForAllClientsMessage': 'Hello from second client'}
-          }));
-        }
-
-        if (data['From'] == 'SocketEngine') {
-          expect(data['Message'], equals('MessageReceived'));
-          secondIoWebSocketChannel.sink.close();
-        }
-      }, count: 2, max: 3));
-
-      ioWebSocketChannel.stream.listen(expectAsync((String details) async {
-        Map data = JSON.decode(details);
-        if (data['Message'] != 'ClientDisconnected' &&
-            data['Message'] != 'ClientConnected') {
-          expect(data['Details']['ForAllClientsMessage'],
-              equals('Hello from second client'));
-          ioWebSocketChannel.sink.close();
-        }
-      }, count: 3, max: 4));
-    }, skip: 'it\'s not needed for this socket');
   });
 }

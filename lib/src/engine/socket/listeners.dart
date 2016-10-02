@@ -6,21 +6,29 @@ class EventsListeners {
   prepareEventsListeners() async {
     socketEngine = this;
 
-    socketEngine.on('WriteToAllClients', (Map data) async {
-      socketEngine.writeToAllClients(data['Details']['forAllClientsMessage'],
-          from: data['SocketClient'], details: data);
-    });
+    // socketEngine.on('WriteToAllClients', (Map data) async {
+    //   socketEngine.writeToAllClients(data['Details']['forAllClientsMessage'],
+    //       details: data);
+    // });
 
     socketEngine.on('SocketClientMustBeRegistered',
         (SocketClient socketClient) async {
-      socketEngine.writeToAllClients('ClientConnected',
-          details: {'OnlineClientsCount': socketEngine.clients.length});
+      Map detailsOfSocketClient = {
+        'Message': 'ClientRegistered',
+        'Identificator': socketClient.identificator
+      };
+
+      socketClient.write('ClientRegistered', detailsOfSocketClient);
+
+      socketEngine.writeToAllClients('ClientConnected', details: {
+        'OnlineClientsCount': socketEngine.clients.length,
+        'ConnectedClientIdentificator': socketClient.identificator
+      });
     });
 
     socketEngine.on('SocketClientMustBeRemoved',
         (SocketClient socketClient) async {
       socketEngine.writeToAllClients('ClientDisconnected',
-          from: socketClient,
           details: {'OnlineClientsCount': socketEngine.clients.length});
     });
   }
