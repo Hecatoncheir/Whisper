@@ -3,7 +3,7 @@ library socket_server;
 import 'dart:io';
 import 'dart:convert';
 
-import 'package:uuid/uuid_server.dart';
+import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:avalanche_events/avalanche_events.dart';
 
