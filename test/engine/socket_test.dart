@@ -80,6 +80,6 @@ main() {
           ioWebSocketChannel.sink.close();
         }
       }, count: 3, max: 4));
-    });
+    }, skip: 'it\'s not needed for this socket');
   });
 }
