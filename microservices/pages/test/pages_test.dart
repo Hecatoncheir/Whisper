@@ -24,23 +24,19 @@ main() {
 
   group("Pages service", () {
     test('must get page desrtiption for path', () async {
-      Map data = {'Message': 'NeedPageDescription', 'Path': 'test'};
+      Map data = {'Message': 'NeedPageDescription'};
       String dataJSON = JSON.encode(data);
 
       ioWebSocketChannel.stream.listen(expectAsync((String dataFromServer) {
-        ioWebSocketChannel.sink.add(dataJSON);
         Map detailsFromServer = JSON.decode(dataFromServer);
         expect(detailsFromServer, isNotEmpty);
-        if (detailsFromServer['Message'] != 'MessageReceived') {
-          expect(detailsFromServer['Message'], 'DescriptionForPage');
-          expect(detailsFromServer['Details']['title'], isNotEmpty);
-          expect(detailsFromServer['Details']['path'], isNotEmpty);
-          expect(detailsFromServer['Details']['description'], isNotEmpty);
-        }
-      }, count: 3));
+        expect(detailsFromServer['Message'], 'DescriptionForPage');
+        expect(detailsFromServer['Details']['title'], isNotEmpty);
+        expect(detailsFromServer['Details']['path'], isNotEmpty);
+        expect(detailsFromServer['Details']['description'], isNotEmpty);
+      }, count: 1));
 
-      ioWebSocketChannel.sink
-          .add(JSON.encode({'Message': 'Connect from client'}));
+      ioWebSocketChannel.sink.add(dataJSON);
     });
   });
 }

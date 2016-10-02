@@ -7,13 +7,14 @@ class ListenersMixin {
     socketEngine = this;
 
     socketEngine.on('NeedPageDescription', (Map data) async {
-      SocketClient socketClient = data['SocketClient'];
-
       Map pageData = {
         'path': 'test',
         'description': 'Page not found',
         'title': '404'
       };
+
+      SocketClient socketClient =
+          socketEngine.clients[data['ClientIdentificator']];
 
       socketClient.write('DescriptionForPage', {'Details': pageData});
     });
