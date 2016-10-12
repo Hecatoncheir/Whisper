@@ -36,5 +36,9 @@ class DataBaseMixin extends Object with DataBaseActionsMixin {
     if (tableList.contains('pages') == false) {
       await database.tableCreate('pages').run(_connection);
     }
+
+    if (tableList.contains('descriptions') == false) {
+      await database.tableCreate('descriptions').run(_connection);
+    }
   }
 }
