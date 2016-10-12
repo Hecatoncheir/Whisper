@@ -25,13 +25,13 @@ class DataBaseMixin extends Object with DataBaseActionsMixin {
     _connection = await database.connect(host: ip, port: port);
 
     databases = await database.dbList().run(_connection);
-    tableList = await database.tableList().run(_connection);
 
     if (databases.contains(baseName) == false) {
       await database.dbCreate('Pages').run(_connection);
     }
 
     _connection.use(baseName);
+    tableList = await database.tableList().run(_connection);
 
     if (tableList.contains('pages') == false) {
       await database.tableCreate('pages').run(_connection);
