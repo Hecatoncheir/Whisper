@@ -13,5 +13,7 @@ class ListenersMixin {
       socketClient.write(
           'DescriptionForPage', {'PageDescription': data['PageDescription']});
     });
+
+    socketEngine.on('NeededDetailsOfPageReady', (Map data) {});
   }
 }

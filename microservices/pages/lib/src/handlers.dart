@@ -15,5 +15,9 @@ class HandlersMixin {
         'ClientIdentificator': data['ClientIdentificator']
       });
     });
+
+    pages.on('NeedDetailsOfPage', (Map data) {});
+
+    pages.on('PageMustBeSaved', (Map data) {});
   }
 }
