@@ -23,20 +23,39 @@ main() {
   });
 
   group("Pages service", () {
-    test('must get page desrtiption for path', () async {
-      Map data = {'Message': 'NeedPageDescription'};
-      String dataJSON = JSON.encode(data);
+    test('can save page', () async {
+      ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
+        Map details = JSON.decode(messageFromSocket);
+        String message = details['Message'];
 
-      ioWebSocketChannel.stream.listen(expectAsync((String dataFromServer) {
-        Map detailsFromServer = JSON.decode(dataFromServer);
-        expect(detailsFromServer, isNotEmpty);
-        expect(detailsFromServer['Message'], 'DescriptionForPage');
-        expect(detailsFromServer['Details']['title'], isNotEmpty);
-        expect(detailsFromServer['Details']['path'], isNotEmpty);
-        expect(detailsFromServer['Details']['description'], isNotEmpty);
-      }, count: 1));
+        expect(message, equals('NewPageSaved'));
+      }));
 
-      ioWebSocketChannel.sink.add(dataJSON);
+      String socketMessage = 'PageMustBeSaved';
+
+      Map pageDetails = {
+        'title': 'Test page',
+        'description': 'Test description text',
+        'path': 'test'
+      };
+      Map details = {'Message': socketMessage, 'Page': pageDetails};
+      ioWebSocketChannel.sink.add(JSON.encode(details));
     });
+
+    //   test('must get page desrtiption for path', () async {
+    //     Map data = {'Message': 'NeedPageDescription'};
+    //     String dataJSON = JSON.encode(data);
+
+    //     ioWebSocketChannel.stream.listen(expectAsync((String dataFromServer) {
+    //       Map detailsFromServer = JSON.decode(dataFromServer);
+    //       expect(detailsFromServer, isNotEmpty);
+    //       expect(detailsFromServer['Message'], 'DescriptionForPage');
+    //       expect(detailsFromServer['Details']['title'], isNotEmpty);
+    //       expect(detailsFromServer['Details']['path'], isNotEmpty);
+    //       expect(detailsFromServer['Details']['description'], isNotEmpty);
+    //     }, count: 1));
+
+    //     ioWebSocketChannel.sink.add(dataJSON);
+    //   });
   });
 }

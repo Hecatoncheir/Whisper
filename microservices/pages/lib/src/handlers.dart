@@ -1,23 +1,25 @@
 part of pages;
 
 class HandlersMixin {
-  Pages pages;
+  Pages _pages;
 
   prepareEventsHandlers() async {
-    pages = this;
+    _pages = this;
 
-    pages.on('NeedPageDescription', (Map data) async {
+    _pages.on('NeedPageDescription', (Map data) async {
       String pageDescription =
-          await pages.getPageDescription(path: data['page']['path']);
+          await _pages.getPageDescription(path: data['page']['path']);
 
-      pages.dispatchEvent('DescriptionForPageReady', {
+      _pages.dispatchEvent('DescriptionForPageReady', {
         'PageDescription': pageDescription,
         'ClientIdentificator': data['ClientIdentificator']
       });
     });
 
-    pages.on('NeedDetailsOfPage', (Map data) {});
+    _pages.on('NeedDetailsOfPage', (Map data) {});
 
-    pages.on('PageMustBeSaved', (Map data) {});
+    _pages.on('PageMustBeSaved', (Map data) {
+      print(data);
+    });
   }
 }
