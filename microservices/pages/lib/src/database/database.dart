@@ -56,14 +56,6 @@ class DataBaseMixin {
       'description': page['description']
     };
 
-    Cursor row = await database
-        .table('pages')
-        .filter({'path': page['path']}).run(_connection);
-
-    if (await row.first != null) {
-      return await updatePage(page: page);
-    }
-
     await database
         .table('descriptions')
         .insert(pageDescription)
