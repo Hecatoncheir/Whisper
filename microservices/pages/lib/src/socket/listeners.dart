@@ -13,5 +13,10 @@ class ListenersMixin {
     socketEngine.on('PageUpdated', (Map details) {
       socketEngine.writeToAllClients('PageUpdated', details: details);
     });
+
+    socketEngine.on('PageDetailsReady', (Map details) {
+      socketEngine.clients[details['ClientIdentificator']]
+          .write('PageDetailsReady', details);
+    });
   }
 }

@@ -36,9 +36,10 @@ main() {
       ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
         Map detailsFromServer = JSON.decode(messageFromSocket);
         String message = detailsFromServer['Message'];
+        pageDetails['id'] = detailsFromServer['Page']['id'];
 
         expect(message, equals('NewPageAdded'));
-        expect(detailsFromServer['Page'], isNotNull);
+        expect(detailsFromServer['Page'], equals(pageDetails));
         ioWebSocketChannel.sink.close();
       }));
 
@@ -58,6 +59,7 @@ main() {
       ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
         Map detailsFromServer = JSON.decode(messageFromSocket);
         String message = detailsFromServer['Message'];
+        pageDetails['id'] = detailsFromServer['Page']['id'];
 
         expect(message, equals('PageUpdated'));
         expect(detailsFromServer['Page'], equals(pageDetails));
@@ -78,6 +80,7 @@ main() {
           'description': 'Test description text',
           'path': 'test'
         };
+        pageDetails['id'] = detailsFromServer['Page']['id'];
 
         expect(message, equals('PageDetailsReady'));
         expect(detailsFromServer['Page'], equals(pageDetails));

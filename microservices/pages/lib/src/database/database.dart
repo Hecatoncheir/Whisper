@@ -32,25 +32,79 @@ class DataBaseMixin {
     tableList = await database.tableList().run(_connection);
 
     if (tableList.contains('pages') == false) {
-      await database.tableCreate('pages').run(_connection);
+      await database
+          .tableCreate('pages', {'primary_key': 'path'}).run(_connection);
+      await database.table('pages').indexCreate('id').run(_connection);
     }
 
     if (tableList.contains('descriptions') == false) {
-      await database.tableCreate('descriptions').run(_connection);
+      await database.tableCreate(
+          'descriptions', {'primary_key': 'path'}).run(_connection);
+      await database.table('descriptions').indexCreate('id').run(_connection);
     }
   }
 
   Future<Map> savePage({Map page}) async {
-    // Map pageDetails = {''}dd
-    // database.table('pages').insert(page[])
-    return page;
+    Map pageDetails = new Map.from(page);
+    pageDetails.remove('description');
+
+    await database.table('pages').insert(pageDetails).run(_connection);
+
+    Map pageDescription = {
+      'pageId': page['id'],
+      'path': page['path'],
+      'description': page['description']
+    };
+
+    Cursor row = await database
+        .table('pages')
+        .filter({'path': page['path']}).run(_connection);
+
+    if (await row.first != null) {
+      return await updatePage(page: page);
+    }
+
+    await database
+        .table('descriptions')
+        .insert(pageDescription)
+        .run(_connection);
+
+    Map readyPage = await getPageByPath(path: page['path']);
+
+    return readyPage;
   }
 
   Future<Map> updatePage({Map page}) async {
-    return page;
+    Map newValues = new Map.from(page);
+    newValues.remove('description');
+
+    await database
+        .table('pages')
+        .filter({'path': page['path']})
+        .update(newValues)
+        .run(_connection);
+
+    await database.table('descriptions').filter({'path': page['path']}).update(
+        {'description': page['description']}).run(_connection);
+
+    Map readyPage = await getPageByPath(path: page['path']);
+    return readyPage;
   }
 
   Future<Map> getPageByPath({String path}) async {
+    Cursor readyPageRow = await database
+        .table('pages')
+        .filter({'path': path})
+        .eqJoin('path', database.table('descriptions'))
+        .without({'right': 'pageId'})
+        .zip()
+        .run(_connection);
+
+    Map readyPage = await readyPageRow.first;
+    return readyPage;
+  }
+
+  Future<Map> deletePage({String pageId}) async {
     return new Map();
   }
 }

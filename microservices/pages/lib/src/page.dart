@@ -4,14 +4,14 @@ import 'package:ex_map/ex_map.dart';
 import 'package:uuid/uuid.dart';
 
 class Page extends ExtendedMap {
-  Page({identificator, path, title, description}) {
-    protectedKeys.addAll(['identificator']);
+  Page({id, path, title, description}) {
+    protectedKeys.addAll(['id']);
     types = {'path': String, 'title': String, 'description': String};
-    this.identificator = new Uuid().v4();
+    this.id = new Uuid().v4();
   }
 
-  get identificator => this['identificator'];
-  set identificator(value) => setProtectedField('identificator', value);
+  get id => this['id'];
+  set id(value) => setProtectedField('id', value);
 
   get path => this['path'];
   set path(value) => this['path'] = value;
