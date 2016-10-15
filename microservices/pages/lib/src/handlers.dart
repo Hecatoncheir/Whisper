@@ -19,7 +19,11 @@ class HandlersMixin {
     _pages.on('NeedDetailsOfPage', (Map data) {});
 
     _pages.on('PageMustBeSaved', (Map data) {
-      print(data);
+      Map details = {
+        'Page': data['Page'],
+        'ClientIdentificator': data['ClientIdentificator']
+      };
+      _pages.dispatchEvent('NewPageAdded', details);
     });
   }
 }

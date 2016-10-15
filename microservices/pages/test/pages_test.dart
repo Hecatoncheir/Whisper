@@ -24,13 +24,6 @@ main() {
 
   group("Pages service", () {
     test('can save page', () async {
-      ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
-        Map details = JSON.decode(messageFromSocket);
-        String message = details['Message'];
-
-        expect(message, equals('NewPageSaved'));
-      }));
-
       String socketMessage = 'PageMustBeSaved';
 
       Map pageDetails = {
@@ -38,8 +31,16 @@ main() {
         'description': 'Test description text',
         'path': 'test'
       };
-      Map details = {'Message': socketMessage, 'Page': pageDetails};
-      ioWebSocketChannel.sink.add(JSON.encode(details));
+
+      ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
+        Map detailsFromServer = JSON.decode(messageFromSocket);
+        String message = detailsFromServer['Message'];
+
+        expect(message, equals('NewPageAdded'));
+      }));
+
+      Map detailsForServer = {'Message': socketMessage, 'Page': pageDetails};
+      ioWebSocketChannel.sink.add(JSON.encode(detailsForServer));
     });
 
     //   test('must get page desrtiption for path', () async {

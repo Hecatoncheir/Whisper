@@ -9,7 +9,12 @@ part 'src/page.dart';
 part 'src/handlers.dart';
 
 class Pages extends Object
-    with DataBaseMixin, HandlersMixin, NotifyMixin, ObservableMixin {
+    with
+        DataBaseMixin,
+        HandlersMixin,
+        NotifyMixin,
+        ObservableMixin,
+        SubscriptionMixin {
   PagesSocket socket;
 
   Pages() {
