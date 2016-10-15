@@ -1,7 +1,5 @@
 library socket_server;
 
-import 'dart:convert';
-
 import 'package:whisper/whisper.dart' show SocketEngine, SocketClient;
 
 part 'listeners.dart';

@@ -7,17 +7,11 @@ class ListenersMixin {
     socketEngine = this;
 
     socketEngine.on('NewPageAdded', (Map details) {
-      socketEngine.writeToAllClients('NewPageAdded', details: details['Page']);
+      socketEngine.writeToAllClients('NewPageAdded', details: details);
     });
 
-    // socketEngine.on('DescriptionForPageReady', (Map data) {
-    //   SocketClient socketClient =
-    //       socketEngine.clients[data['ClientIdentificator']];
-    //
-    //   socketClient.write(
-    //       'DescriptionForPage', {'PageDescription': data['PageDescription']});
-    // });
-
-    // socketEngine.on('NeededDetailsOfPageReady', (Map data) {});
+    socketEngine.on('PageUpdated', (Map details) {
+      socketEngine.writeToAllClients('PageUpdated', details: details);
+    });
   }
 }
