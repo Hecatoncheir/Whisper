@@ -3,11 +3,9 @@ library database;
 import 'dart:async';
 import 'package:rethinkdb_driver/rethinkdb_driver.dart';
 
-part 'actions.dart';
-
 const _dataBaseAddres = '192.168.1.113';
 
-class DataBaseMixin extends Object with DataBaseActionsMixin {
+class DataBaseMixin {
   Rethinkdb database;
   Connection _connection;
   final String baseName = 'Pages';
@@ -17,8 +15,8 @@ class DataBaseMixin extends Object with DataBaseActionsMixin {
       int port: 28015,
       String user,
       String password}) async {
-    DbList databases;
-    TableList tableList;
+    List databases;
+    List tableList;
 
     database = new Rethinkdb();
 
@@ -40,5 +38,19 @@ class DataBaseMixin extends Object with DataBaseActionsMixin {
     if (tableList.contains('descriptions') == false) {
       await database.tableCreate('descriptions').run(_connection);
     }
+  }
+
+  Future<Map> savePage({Map page}) async {
+    // Map pageDetails = {''}dd
+    // database.table('pages').insert(page[])
+    return page;
+  }
+
+  Future<Map> updatePage({Map page}) async {
+    return page;
+  }
+
+  Future<Map> getPageByPath({String path}) async {
+    return new Map();
   }
 }
