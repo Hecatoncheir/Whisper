@@ -24,6 +24,14 @@ class HandlersMixin {
       _pages.dispatchEvent('PageUpdated', details);
     });
 
+    _pages.on('PageShouldBeRemoved', (Map data) async {
+      String removedPageId =
+          await _pages.removePageByPath(path: data['Page']['path']);
+      _pages.dispatchEvent('PageRemoved', {
+        'Page': {'id': removedPageId}
+      });
+    });
+
     _pages.on('NeedPageDetails', (Map data) async {
       String pagePath = data['Page']['path'];
 

@@ -94,5 +94,25 @@ main() {
       };
       ioWebSocketChannel.sink.add(JSON.encode(detailsForServer));
     });
+
+    test('can remove page', () async {
+      ioWebSocketChannel.stream.listen(expectAsync((messageFromSocket) {
+        Map detailsFromServer = JSON.decode(messageFromSocket);
+        String message = detailsFromServer['Message'];
+
+        detailsFromServer['Page']['id'] = detailsFromServer['Page']['id'];
+
+        expect(message, equals('PageRemoved'));
+        expect(detailsFromServer['Page']['id'], isNotNull);
+        ioWebSocketChannel.sink.close();
+      }));
+
+      Map pageForCompare = {'path': 'test'};
+      Map detailsForServer = {
+        'Message': 'PageShouldBeRemoved',
+        'Page': pageForCompare
+      };
+      ioWebSocketChannel.sink.add(JSON.encode(detailsForServer));
+    });
   });
 }

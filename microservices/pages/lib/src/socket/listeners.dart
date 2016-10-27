@@ -14,6 +14,10 @@ class ListenersMixin {
       socketEngine.writeToAllClients('PageUpdated', details: details);
     });
 
+    socketEngine.on('PageRemoved', (Map details) {
+      socketEngine.writeToAllClients('PageRemoved', details: details);
+    });
+
     socketEngine.on('PageDetailsReady', (Map details) {
       socketEngine.clients[details['ClientIdentificator']]
           .write('PageDetailsReady', details);

@@ -3,7 +3,7 @@ library database;
 import 'dart:async';
 import 'package:rethinkdb_driver/rethinkdb_driver.dart';
 
-const _dataBaseAddres = '192.168.1.113';
+const _dataBaseAddres = 'localhost';
 
 class DataBaseMixin {
   Rethinkdb database;
@@ -81,6 +81,18 @@ class DataBaseMixin {
 
     Map readyPage = await getPageByPath(path: page['path']);
     return readyPage;
+  }
+
+  Future<String> removePageByPath({String path}) async {
+    Map page = await getPageByPath(path: path);
+
+    await database
+        .table('pages')
+        .filter({'path': path})
+        .delete()
+        .run(_connection);
+
+    return page['id'];
   }
 
   Future<Map> getPageByPath({String path}) async {
