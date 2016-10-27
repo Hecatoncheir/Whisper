@@ -1,6 +1,7 @@
 part of socket_server;
 
-class SocketClient extends Object with NotifyMixin, ObservableMixin {
+class SocketClient extends Object
+    with NotifyMixin, ObservableMixin, SubscriptionMixin {
   IOWebSocketChannel channel;
   String identificator;
 

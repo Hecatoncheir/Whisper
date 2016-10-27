@@ -3,10 +3,14 @@ dependencies:
   polymer: '^1.0.0-rc.18'
   polymer_elements: '^1.0.0-rc.9'
   web_socket_channel: '^1.0.4'
-  ex_map: '^0.10.2'
+  rethinkdb_driver: '^2.3.1'
+  ex_map:
+    version: '^0.10.3'
+    git: https://github.com/Rasarts/ExMap.git
   whisper:
     path: ../../
 dev_dependencies:
   test: '^0.12.15+3'
 transformers:
-  - ex_map
+  - test/pub_serve:
+      $include: test/**_test{.*,}.dart

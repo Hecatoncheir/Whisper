@@ -9,7 +9,8 @@ import 'package:avalanche_events/avalanche_events.dart';
 
 part 'clients.dart';
 
-class SocketEngine extends Object with NotifyMixin, ObservableMixin {
+class SocketEngine extends Object
+    with NotifyMixin, ObservableMixin, SubscriptionMixin {
   HttpServer httpServer;
   Map<String, SocketClient> clients;
 
@@ -18,6 +19,11 @@ class SocketEngine extends Object with NotifyMixin, ObservableMixin {
   addClient(WebSocket socketClient) async {
     SocketClient client = new SocketClient(socketClient);
     client.observable(this);
+
+    this.observers.forEach((observer) {
+      client.observable(observer);
+    });
+
     clients[client.identificator] = client;
 
     client.on('SocketClientMustBeRemoved', (SocketClient socketClient) async {

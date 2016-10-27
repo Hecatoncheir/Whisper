@@ -14,6 +14,10 @@ class Engine extends Object with EngineMixin {
     pages = new pagesService.Pages();
   }
 
+  setUpMicroservices() async {
+    await pages.setUpDataBase();
+  }
+
   powerUpSockets({String ip, int port}) {
     socket.powerUp();
     pages.socket.powerUp();
