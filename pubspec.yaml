@@ -6,18 +6,23 @@ homepage: https://github.com
 environment:
   sdk: '>=1.18.1 <2.0.0'
 dependencies:
-  avalanche_events: '^0.10.7'
   browser: '^0.10.0+2'
   mime: '^0.9.3'
   path: '^1.3.9'
-  polymer: '^1.0.0-rc.18'
-  polymer_elements: '^1.0.0-rc.9'
-  web_socket_channel: '^1.0.4'
+
   uuid: '^0.5.3'
+
+  socket_system:
+    version: '^0.9.0'
+    git: 'https://github.com/WhisperEngine/SocketSystem.git'
+  
+  event_system:
+    version: '^1.2.0'
+    git: 'https://github.com/WhisperEngine/EventSystem.git'
 
   # microservices
   pages:
-    path: 'microservices/pages/'
+    git: 'https://github.com/WhisperEngine/Pages.git'
 
 dev_dependencies:
   test: '^0.12.15+3'
@@ -26,7 +31,5 @@ dev_dependencies:
 dependency_overrides:
   logging: '^0.11.0'
 transformers:
-  - polymer:
-      entry_points: web/index.html
   - test/pub_serve:
       $include: test/**_test{.*,}.dart

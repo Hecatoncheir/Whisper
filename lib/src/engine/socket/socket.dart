@@ -1,11 +1,10 @@
 library socket_server;
 
-import 'package:whisper/share/socket/socket.dart' as share;
-import 'package:whisper/share/socket/socket.dart' show SocketClient;
+import 'package:socket_system/socket.dart' as socket;
 
 part 'listeners.dart';
 
-class SocketEngine extends share.SocketEngine with EventsListeners {
+class SocketEngine extends socket.SocketEngine with EventsListeners {
   SocketEngine() {
     prepareEventsListeners();
   }

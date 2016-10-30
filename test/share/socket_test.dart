@@ -4,7 +4,7 @@ library socket_test;
 import 'dart:io';
 import 'package:test/test.dart';
 
-import 'package:whisper/share/socket/socket.dart';
+import 'package:socket_system/socket.dart';
 
 main() {
   SocketEngine socketEngine;

@@ -7,7 +7,7 @@ class EventsListeners {
     socketEngine = this;
 
     socketEngine.on('SocketClientMustBeRegistered',
-        (SocketClient socketClient) async {
+        (socket.SocketClient socketClient) async {
       Map detailsOfSocketClient = {
         'Message': 'ClientRegistered',
         'Identificator': socketClient.identificator
@@ -22,7 +22,7 @@ class EventsListeners {
     });
 
     socketEngine.on('SocketClientMustBeRemoved',
-        (SocketClient socketClient) async {
+        (socket.SocketClient socketClient) async {
       socketEngine.writeToAllClients('ClientDisconnected',
           details: {'OnlineClientsCount': socketEngine.clients.length});
     });
