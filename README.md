@@ -18,4 +18,24 @@ main() async {
 }
 
 ```
+
+<br>
+With microservices
+
+```dart
+library server;
+
+import 'package:whisper/whisper.dart' show Engine;
+
+main() async {
+  Engine engine = new Engine();
+  await engine.setUpMicroservices();
+
+  engine
+    ..powerUpSockets()
+    ..serveAssets(port:8000);
+}
+
+```
+
 [![GitHub stars](https://img.shields.io/github/stars/Rasarts/Whisper.svg?style=flat-square)](https://github.com/Rasarts/Whisper/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Rasarts/Whisper.svg?style=flat-square)](https://github.com/Rasarts/Whisper/network) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://raw.githubusercontent.com/Rasarts/Whisper/master/LICENSE)
