@@ -15,6 +15,7 @@ main() {
       await engine.serveAssets();
       expect(engine.status, equals('Http server online'));
     });
+
     test('can serve main html file', () async {
       HttpClient httpClient;
       HttpClientRequest httpClientRequest;

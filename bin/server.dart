@@ -8,5 +8,5 @@ main() async {
 
   engine
     ..powerUpSockets()
-    ..serveAssets(port: 3000, dirPath: 'web');
+    ..serveAssets(port:8000);
 }
