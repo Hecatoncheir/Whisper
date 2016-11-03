@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-   rethink:
+   db:
      image: rethinkdb
      ports:
        - "8080:8080"
@@ -15,4 +15,6 @@ services:
      ports:
        - "8000:8000"
      depends_on:
-       - rethink
+       - db
+     links:
+       - "db:rethinkdb"

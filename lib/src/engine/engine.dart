@@ -15,7 +15,7 @@ class Engine extends Object with EngineMixin {
   }
 
   setUpMicroservices() async {
-    await pages.setUpDataBase();
+    await pages.setUpDataBase(ip:'db://rethinkdb');
   }
 
   powerUpSockets({String ip, int port}) {
