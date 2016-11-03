@@ -2,7 +2,7 @@ name: whisper
 version: 0.1.0
 author: Vostrikov Vitaliy <rasart.pro@gmail.com>
 description: 'Engine of real time content management'
-homepage: https://github.com
+homepage: 'https://github.com/WhisperEngine'
 environment:
   sdk: '>=1.18.1 <2.0.0'
 dependencies:

@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+   rethink:
+     image: rethinkdb
+     ports:
+       - "8080:8080"
+     volumes:
+       - .:/database
+   engine:
+     build: .
+     command: 'dart bin/server.dart'
+     volumes:
+       - .:/engine
+     ports:
+       - "8000:8000"
+     depends_on:
+       - rethink
